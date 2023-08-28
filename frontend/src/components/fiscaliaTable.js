@@ -49,7 +49,7 @@ function App(props) {
                   {fiscalia.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <b>Dirección:</b> esta es una direccion algo larga {fiscalia.address}
+                  <b>Dirección:</b> {fiscalia.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <b>Teléfono:</b> {fiscalia.phone}

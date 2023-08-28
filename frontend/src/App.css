@@ -37,6 +37,10 @@
   padding-left: 2%;
 }
 
+.maps-frame {
+  padding-top: 2%;
+}
+
 .text-error {
   color: red;
   font-size: 14px;

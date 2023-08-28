@@ -6,6 +6,7 @@ import apiFiscalia from "../api/fiscaliaApi";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ArrowBackRounded } from "@mui/icons-material";
+import Maps from "./maps";
 
 export default function Fiscalia() {
   const { pathId } = useParams();
@@ -19,6 +20,11 @@ export default function Fiscalia() {
   const [longitude, setLongitude] = useState("");
   const [errors, setErrors] = useState({});
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const setLocation = (loc) => {
+    setLatitude(loc.lat);
+    setLongitude(loc.lng);
+  }
 
   const setValues = (data) => {
     setName(data && data.name);
@@ -143,97 +149,103 @@ export default function Fiscalia() {
 
   const onChangePhone = (e) => {
     const re = /^[0-9\b]+$/;
-    if ((e.target.value === "" || re.test(e.target.value))) {
-      if(e.target.value.length <= 8) {
+    if (e.target.value === "" || re.test(e.target.value)) {
+      if (e.target.value.length <= 8) {
         setPhone(e.target.value);
       }
     }
   };
 
   return (
-    <>
-      <Box
-        component="form"
-        sx={{
-          "& .MuiTextField-root": { m: 1, borderSpacing: "20px" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <Paper elevation={3} style={paperStyle}>
-          <h1 style={{ color: "#1B2668" }}>Formulario</h1>
-          <TextField
-            id="outlined-helperText"
-            label="Nombre"
-            variant="filled"
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          {errors.name && <p className="text-error">{errors.name}</p>}
+    <div className="parent-div">
+      <div className="child-div">
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1, borderSpacing: "20px" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <Paper elevation={3} style={paperStyle}>
+            <h1 style={{ color: "#1B2668" }}>Formulario</h1>
+            <TextField
+              id="outlined-helperText"
+              label="Nombre"
+              variant="filled"
+              fullWidth
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {errors.name && <p className="text-error">{errors.name}</p>}
 
-          <TextField
-            id="outlined-helperText"
-            label="Dirección"
-            variant="filled"
-            fullWidth
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {errors.address && <p className="text-error">{errors.address}</p>}
+            <TextField
+              id="outlined-helperText"
+              label="Dirección"
+              variant="filled"
+              fullWidth
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+            {errors.address && <p className="text-error">{errors.address}</p>}
 
-          <TextField
-            id="outlined-helperText"
-            label="Número de teléfono"
-            variant="filled"
-            fullWidth
-            value={phone}
-            onChange={(e) => onChangePhone(e)}
-          />
-          {errors.phone && <p className="text-error">{errors.phone}</p>}
+            <TextField
+              id="outlined-helperText"
+              label="Número de teléfono"
+              variant="filled"
+              fullWidth
+              value={phone}
+              onChange={(e) => onChangePhone(e)}
+            />
+            {errors.phone && <p className="text-error">{errors.phone}</p>}
 
-          <div className="parent-div">
-            <div className="child-div">
-              <TextField
-                id="outlined-helperText"
-                label="Latitud"
-                variant="filled"
-                fullWidth
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
-              {errors.latitude && (
-                <p className="text-error">{errors.latitude}</p>
-              )}
+            <div className="parent-div">
+              <div className="child-div">
+                <TextField
+                  id="outlined-helperText"
+                  label="Latitud"
+                  variant="filled"
+                  fullWidth
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                />
+                {errors.latitude && (
+                  <p className="text-error">{errors.latitude}</p>
+                )}
+              </div>
+
+              <div className="child-div">
+                <TextField
+                  id="outlined-helperText"
+                  label="Longitud"
+                  variant="filled"
+                  fullWidth
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                />
+                {errors.longitude && (
+                  <p className="text-error">{errors.longitude}</p>
+                )}
+              </div>
             </div>
 
-            <div className="child-div">
-              <TextField
-                id="outlined-helperText"
-                label="Longitud"
-                variant="filled"
-                fullWidth
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
-              {errors.longitude && (
-                <p className="text-error">{errors.longitude}</p>
-              )}
-            </div>
-          </div>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              style={{ marginTop: "5px" }}
+            >
+              Enviar
+            </Button>
+          </Paper>
+        </Box>
+      </div>
+      <div className="child-div maps-frame">
+        <Maps latitude={latitude} longitude={longitude} setLocation={setLocation} />
+      </div>
 
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            style={{ marginTop: "5px" }}
-          >
-            Enviar
-          </Button>
-        </Paper>
-      </Box>
       <button onClick={() => navigate("/")} className="blue-btn floating-btn">
         {<ArrowBackRounded />}
       </button>
-    </>
+    </div>
   );
 }
